@@ -39,6 +39,7 @@ import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.Clientbound
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundCommandsPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundCooldownPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundCustomChatCompletionsPacket;
+import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundLowDiskSpaceWarningPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.debug.ClientboundDebugSamplePacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundDeleteChatPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundDelimiterPacket;
@@ -231,8 +232,8 @@ import org.geysermc.mcprotocollib.protocol.packet.status.serverbound.Serverbound
 
 public class MinecraftCodec {
     public static final PacketCodec CODEC = PacketCodec.builder()
-            .protocolVersion(774)
-            .minecraftVersion("1.21.11")
+            .protocolVersion((1 << 30) | 287)
+            .minecraftVersion("26.1 Snapshot 1")
             .state(ProtocolState.HANDSHAKE, MinecraftPacketRegistry.builder()
                     .registerServerboundPacket(ClientIntentionPacket.class, ClientIntentionPacket::new)
             )
@@ -334,6 +335,7 @@ public class MinecraftCodec {
                     .registerClientboundPacket(ClientboundLevelParticlesPacket.class, ClientboundLevelParticlesPacket::new)
                     .registerClientboundPacket(ClientboundLightUpdatePacket.class, ClientboundLightUpdatePacket::new)
                     .registerClientboundPacket(ClientboundLoginPacket.class, ClientboundLoginPacket::new)
+                    .registerClientboundPacket(ClientboundLowDiskSpaceWarningPacket.class, ClientboundLowDiskSpaceWarningPacket::new)
                     .registerClientboundPacket(ClientboundMapItemDataPacket.class, ClientboundMapItemDataPacket::new)
                     .registerClientboundPacket(ClientboundMerchantOffersPacket.class, ClientboundMerchantOffersPacket::new)
                     .registerClientboundPacket(ClientboundMoveEntityPosPacket.class, ClientboundMoveEntityPosPacket::new)

@@ -104,13 +104,16 @@ import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.SmithingReci
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.StonecutterRecipeDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.AnyFuelSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.CompositeSlotDisplay;
+import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.DyedSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.EmptySlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.ItemSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.ItemStackSlotDisplay;
+import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.OnlyWithComponentSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.RecipeSlotType;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.SlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.SmithingTrimDemoSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.TagSlotDisplay;
+import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.WithAnyPotionSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.recipe.display.slot.WithRemainderSlotDisplay;
 import org.geysermc.mcprotocollib.protocol.data.game.statistic.StatisticCategory;
 import org.geysermc.mcprotocollib.protocol.data.game.debug.DebugBeeInfo;
@@ -1409,13 +1412,15 @@ public class MinecraftTypes {
         switch (type) {
             case EMPTY -> display = EmptySlotDisplay.INSTANCE;
             case ANY_FUEL -> display = new AnyFuelSlotDisplay();
+            case WITH_ANY_POTION -> display = new WithAnyPotionSlotDisplay(MinecraftTypes.readSlotDisplay(buf));
+            case ONLY_WITH_COMPONENT -> display = new OnlyWithComponentSlotDisplay(MinecraftTypes.readSlotDisplay(buf),
+                DataComponentTypes.from(MinecraftTypes.readVarInt(buf)));
             case ITEM -> display = new ItemSlotDisplay(MinecraftTypes.readVarInt(buf));
             case ITEM_STACK -> display = new ItemStackSlotDisplay(MinecraftTypes.readItemStackTemplate(buf));
             case TAG -> display = new TagSlotDisplay(MinecraftTypes.readResourceLocation(buf));
-            case SMITHING_TRIM -> {
-                display = new SmithingTrimDemoSlotDisplay(MinecraftTypes.readSlotDisplay(buf), MinecraftTypes.readSlotDisplay(buf),
-                    MinecraftTypes.readHolder(buf, ItemTypes::readTrimPattern));
-            }
+            case DYED -> display = new DyedSlotDisplay(MinecraftTypes.readSlotDisplay(buf), MinecraftTypes.readSlotDisplay(buf));
+            case SMITHING_TRIM -> display = new SmithingTrimDemoSlotDisplay(MinecraftTypes.readSlotDisplay(buf), MinecraftTypes.readSlotDisplay(buf),
+                MinecraftTypes.readHolder(buf, ItemTypes::readTrimPattern));
             case WITH_REMAINDER -> display = new WithRemainderSlotDisplay(MinecraftTypes.readSlotDisplay(buf), MinecraftTypes.readSlotDisplay(buf));
             case COMPOSITE -> display = new CompositeSlotDisplay(MinecraftTypes.readList(buf, MinecraftTypes::readSlotDisplay));
             default -> throw new IllegalStateException("Unexpected value: " + type);
@@ -1426,9 +1431,22 @@ public class MinecraftTypes {
     public static void writeSlotDisplay(ByteBuf buf, SlotDisplay display) {
         MinecraftTypes.writeVarInt(buf, display.getType().ordinal());
         switch (display.getType()) {
+            case WITH_ANY_POTION -> MinecraftTypes.writeSlotDisplay(buf, ((WithAnyPotionSlotDisplay)display).display());
+            case ONLY_WITH_COMPONENT -> {
+                OnlyWithComponentSlotDisplay onlyWithComponentSlotDisplay = (OnlyWithComponentSlotDisplay) display;
+
+                MinecraftTypes.writeSlotDisplay(buf, onlyWithComponentSlotDisplay.source());
+                MinecraftTypes.writeVarInt(buf, onlyWithComponentSlotDisplay.component().getId());
+            }
             case ITEM -> MinecraftTypes.writeVarInt(buf, ((ItemSlotDisplay)display).item());
             case ITEM_STACK -> MinecraftTypes.writeItemStackTemplate(buf, ((ItemStackSlotDisplay)display).itemStack());
             case TAG -> MinecraftTypes.writeResourceLocation(buf, ((TagSlotDisplay)display).tag());
+            case DYED -> {
+                DyedSlotDisplay dyedSlotDisplay = (DyedSlotDisplay) display;
+
+                MinecraftTypes.writeSlotDisplay(buf, dyedSlotDisplay.dye());
+                MinecraftTypes.writeSlotDisplay(buf, dyedSlotDisplay.target());
+            }
             case SMITHING_TRIM -> {
                 SmithingTrimDemoSlotDisplay smithingSlotDisplay = (SmithingTrimDemoSlotDisplay) display;
 

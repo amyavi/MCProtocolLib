@@ -251,7 +251,7 @@ public class ItemTypes {
         });
 
         BlocksAttacks.ItemDamageFunction itemDamage = new BlocksAttacks.ItemDamageFunction(buf.readFloat(), buf.readFloat(), buf.readFloat());
-        Key bypassedBy = MinecraftTypes.readNullable(buf, MinecraftTypes::readResourceLocation);
+        HolderSet bypassedBy = MinecraftTypes.readNullable(buf, MinecraftTypes::readHolderSet);
         Sound blockSound = MinecraftTypes.readNullable(buf, MinecraftTypes::readSound);
         Sound disableSound = MinecraftTypes.readNullable(buf, MinecraftTypes::readSound);
         return new BlocksAttacks(blockDelaySeconds, disableCooldownScale, damageReductions, itemDamage, bypassedBy, blockSound, disableSound);
@@ -271,7 +271,7 @@ public class ItemTypes {
         buf.writeFloat(blocksAttacks.itemDamage().threshold());
         buf.writeFloat(blocksAttacks.itemDamage().base());
         buf.writeFloat(blocksAttacks.itemDamage().factor());
-        MinecraftTypes.writeNullable(buf, blocksAttacks.bypassedBy(), MinecraftTypes::writeResourceLocation);
+        MinecraftTypes.writeNullable(buf, blocksAttacks.bypassedBy(), MinecraftTypes::writeHolderSet);
         MinecraftTypes.writeNullable(buf, blocksAttacks.blockSound(), MinecraftTypes::writeSound);
         MinecraftTypes.writeNullable(buf, blocksAttacks.disableSound(), MinecraftTypes::writeSound);
     }

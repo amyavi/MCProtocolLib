@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.With;
 import org.geysermc.mcprotocollib.protocol.codec.MinecraftPacket;
 import org.geysermc.mcprotocollib.protocol.codec.MinecraftTypes;
-import org.geysermc.mcprotocollib.protocol.data.game.level.ClockState;
+import org.geysermc.mcprotocollib.protocol.data.game.level.ClockNetworkState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +14,9 @@ import java.util.Map;
 @With
 public class ClientboundSetTimePacket implements MinecraftPacket {
     private final long gameTime;
-    private final Map<Integer, ClockState> clockUpdates;
+    private final Map<Integer, ClockNetworkState> clockUpdates;
 
-    public ClientboundSetTimePacket(long gameTime, Map<Integer, ClockState> clockUpdates) {
+    public ClientboundSetTimePacket(long gameTime, Map<Integer, ClockNetworkState> clockUpdates) {
         this.gameTime = gameTime;
         this.clockUpdates = Map.copyOf(clockUpdates);
     }
@@ -28,7 +28,7 @@ public class ClientboundSetTimePacket implements MinecraftPacket {
         int size = MinecraftTypes.readVarInt(in);
         for (int i = 0; i < size; i++) {
             int clockType = MinecraftTypes.readVarInt(in);
-            ClockState state = new ClockState(MinecraftTypes.readVarLong(in), in.readBoolean());
+            ClockNetworkState state = new ClockNetworkState(MinecraftTypes.readVarLong(in), in.readFloat(), in.readFloat());
             this.clockUpdates.put(clockType, state);
         }
     }
@@ -38,10 +38,11 @@ public class ClientboundSetTimePacket implements MinecraftPacket {
         out.writeLong(this.gameTime);
 
         MinecraftTypes.writeVarInt(out, this.clockUpdates.size());
-        for (Map.Entry<Integer, ClockState> entry : this.clockUpdates.entrySet()) {
+        for (Map.Entry<Integer, ClockNetworkState> entry : this.clockUpdates.entrySet()) {
             MinecraftTypes.writeVarInt(out, entry.getKey());
             MinecraftTypes.writeVarLong(out, entry.getValue().totalTicks());
-            out.writeBoolean(entry.getValue().paused());
+            out.writeFloat(entry.getValue().partialTick());
+            out.writeFloat(entry.getValue().rate());
         }
     }
 

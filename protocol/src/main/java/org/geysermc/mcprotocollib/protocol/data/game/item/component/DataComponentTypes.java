@@ -121,8 +121,11 @@ public class DataComponentTypes {
     public static final IntComponentType MOOSHROOM_VARIANT = register(id -> new IntComponentType(id, "mooshroom/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType RABBIT_VARIANT = register(id -> new IntComponentType(id, "rabbit/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType PIG_VARIANT = register(id -> new IntComponentType(id, "pig/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
+    public static final IntComponentType PIG_SOUND_VARIANT = register(id -> new IntComponentType(id, "pig/sound_variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType COW_VARIANT = register(id -> new IntComponentType(id, "cow/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
+    public static final IntComponentType COW_SOUND_VARIANT = register(id -> new IntComponentType(id, "cow/sound_variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType CHICKEN_VARIANT = register(id -> new IntComponentType(id, "chicken/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
+    public static final IntComponentType CHICKEN_SOUND_VARIANT = register(id -> new IntComponentType(id, "chicken/sound_variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType ZOMBIE_NAUTILUS_VARIANT = register(id -> new IntComponentType(id, "zombie_nautilus/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType FROG_VARIANT = register(id -> new IntComponentType(id, "frog/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType HORSE_VARIANT = register(id -> new IntComponentType(id, "horse/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
@@ -130,6 +133,7 @@ public class DataComponentTypes {
     public static final IntComponentType LLAMA_VARIANT = register(id -> new IntComponentType(id, "llama/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType AXOLOTL_VARIANT = register(id -> new IntComponentType(id, "axolotl/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType CAT_VARIANT = register(id -> new IntComponentType(id, "cat/variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
+    public static final IntComponentType CAT_SOUND_VARIANT = register(id -> new IntComponentType(id, "cat/sound_variant", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType CAT_COLLAR = register(id -> new IntComponentType(id, "cat/collar", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType SHEEP_COLOR = register(id -> new IntComponentType(id, "sheep/color", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));
     public static final IntComponentType SHULKER_COLOR = register(id -> new IntComponentType(id, "shulker/color", MinecraftTypes::readVarInt, MinecraftTypes::writeVarInt, IntDataComponent::new));

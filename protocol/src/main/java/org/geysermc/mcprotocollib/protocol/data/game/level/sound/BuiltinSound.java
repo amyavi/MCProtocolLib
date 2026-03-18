@@ -354,6 +354,7 @@ public enum BuiltinSound implements Sound {
     ENTITY_CHICKEN_HURT("entity.chicken.hurt"),
     ENTITY_BABY_CHICKEN_HURT("entity.baby_chicken.hurt"),
     ENTITY_CHICKEN_STEP("entity.chicken.step"),
+    ENTITY_BABY_CHICKEN_STEP("entity.baby_chicken.step"),
     BLOCK_CHISELED_BOOKSHELF_BREAK("block.chiseled_bookshelf.break"),
     BLOCK_CHISELED_BOOKSHELF_FALL("block.chiseled_bookshelf.fall"),
     BLOCK_CHISELED_BOOKSHELF_HIT("block.chiseled_bookshelf.hit"),

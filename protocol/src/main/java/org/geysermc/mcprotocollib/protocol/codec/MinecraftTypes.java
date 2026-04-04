@@ -1777,14 +1777,16 @@ public class MinecraftTypes {
 
     public static ChunkSection readChunkSection(ByteBuf buf, int blockStateRegistrySize, int biomeRegistrySize) {
         int blockCount = buf.readShort();
+        int fluidCount = buf.readShort();
 
         DataPalette blockStatePalette = MinecraftTypes.readDataPalette(buf, PaletteType.BLOCK_STATE, blockStateRegistrySize);
         DataPalette biomePalette = MinecraftTypes.readDataPalette(buf, PaletteType.BIOME, biomeRegistrySize);
-        return new ChunkSection(blockCount, blockStatePalette, biomePalette);
+        return new ChunkSection(blockCount, fluidCount, blockStatePalette, biomePalette);
     }
 
     public static void writeChunkSection(ByteBuf buf, ChunkSection section) {
         buf.writeShort(section.getBlockCount());
+        buf.writeShort(section.getFluidCount());
         MinecraftTypes.writeDataPalette(buf, section.getBlockData());
         MinecraftTypes.writeDataPalette(buf, section.getBiomeData());
     }
